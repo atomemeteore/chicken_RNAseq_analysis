@@ -36,25 +36,171 @@ This repository contains an RNA-seq analysis pipeline that examines gene express
 
 ## Analysis Pipeline
 1. Quality Control and Preprocessing
-   - Raw data QC
-   - Adapter trimming
-   - Quality filtering
+   - Raw data QC using FastQC (v0.11.9)
+     * Quality score distribution analysis
+     * Sequence duplication assessment
+     * Adapter contamination detection
+     * Base composition analysis
+   - Adapter trimming with Trimmomatic (v0.39)
+     * Removal of Illumina adapters
+     * Quality filtering (leading/trailing bases)
+     * Sliding window quality trimming
+     * Minimum length filtering
+   - Post-trimming QC with FastQC and MultiQC
+     * Verification of adapter removal
+     * Quality metrics visualization
+     * Sample comparison reports
 
 2. Alignment and Quantification
-   - Reference genome alignment
-   - Expression quantification
-   - Generation of expression matrix
+   - Reference genome alignment using HISAT2 (v2.2.1)
+     * Splice-aware alignment
+     * Multi-threaded processing
+     * Optimized for RNA-seq data
+   - SAMtools (v1.15) for BAM processing
+     * SAM to BAM conversion
+     * BAM sorting and indexing
+     * Alignment statistics
+   - Expression quantification with featureCounts (v2.0.1)
+     * Gene-level counting
+     * Multi-mapping handling
+     * Strand-specific counting support
 
 3. Differential Expression Analysis
-   - Comparison between high and low shear force groups
-   - Statistical analysis
-   - Visualization
+   - DESeq2 (v1.32.0) for statistical analysis
+     * Normalization for sequencing depth
+     * Dispersion estimation
+     * Differential expression testing
+     * Log2 fold change shrinkage
+   - Statistical thresholds:
+     * Adjusted p-value < 0.05
+     * |Log2 fold change| > 1
 
-4. Visualization
-   - Correlation plots
-   - MA plots
-   - PCA plots
-   - Shear force-specific expression patterns
+4. Visualization (R v4.1.0)
+   - Correlation plots using pheatmap
+     * Sample correlation heatmaps
+     * Hierarchical clustering
+   - MA plots with ggplot2
+     * Log fold change vs mean expression
+     * Significance highlighting
+   - PCA plots using ggplot2
+     * Dimension reduction
+     * Sample clustering visualization
+   - Custom expression pattern plots
+     * Gene-specific visualizations
+     * Group comparisons
+
+## Tools and Dependencies
+
+### Core Analysis Tools
+
+- **SRA Tools**
+  - Purpose: Download and handle SRA format sequencing data
+  - Features:
+    * Direct download from NCBI SRA
+    * FASTQ format conversion
+    * Compression handling
+
+- **FastQC** (v0.11.9)
+  - Purpose: Quality control of raw sequencing data
+  - Features:
+    * Per base quality scores
+    * Sequence duplication levels
+    * Adapter content detection
+    * Base composition analysis
+  - Usage: Initial and post-trimming QC
+
+- **Trimmomatic** (v0.39)
+  - Purpose: Adapter and quality trimming
+  - Features: 
+    * Illumina adapter removal
+    * Sliding window trimming
+    * Minimum length filtering
+  - Parameters:
+    * ILLUMINACLIP: TruSeq3-SE.fa:2:30:10
+    * LEADING: 3
+    * TRAILING: 3
+    * SLIDINGWINDOW: 4:15
+    * MINLEN: 36
+
+- **STAR** (v2.7+)
+  - Purpose: RNA-seq read alignment
+  - Features:
+    * Splice-aware alignment
+    * Multi-threaded processing
+    * Memory-efficient operation
+  - Parameters:
+    * Genome indexing with sjdbOverhang 99
+    * BAM output sorted by coordinate
+    * Multi-threading support
+
+- **SAMtools** (v1.15)
+  - Purpose: SAM/BAM manipulation
+  - Features:
+    * Format conversion
+    * BAM sorting and indexing
+    * Alignment statistics
+    * BAM file compression
+
+- **Subread package/featureCounts** (v2.0.1)
+  - Purpose: Read counting and quantification
+  - Features:
+    * Gene-level counting
+    * Multi-threading support
+    * GTF/GFF format support
+    * Strand-specific counting
+  - Parameters:
+    * Multi-threaded processing
+    * Gene-level summarization
+
+- **MultiQC**
+  - Purpose: Aggregate QC reports
+  - Features:
+    * Combines reports from multiple tools
+    * Interactive visualizations
+    * Sample comparison
+    * Quality metric summaries
+
+### Statistical Analysis and Visualization
+- **R** (v4.2)
+  - Purpose: Statistical analysis and visualization
+  - Environment: Local installation (not on IFB cluster)
+  - Usage: Analysis performed locally using `create_expression_atlas.R` after transferring count data from IFB cluster
+  - Key packages:
+    * **DESeq2**: Differential expression analysis
+    * **edgeR**: RNA-seq analysis
+    * **ggplot2**: Data visualization
+    * **pheatmap**: Heatmap generation
+    * **RColorBrewer**: Color palettes
+    * **gridExtra**: Plot layouts
+
+Note: The RNA-seq data processing (quality control, alignment, and counting) is performed on the IFB cluster, but the final statistical analysis and visualization using R is done locally. This requires transferring the count data from the IFB cluster to your local machine using:
+```bash
+# From your local machine
+scp USERNAME@core.cluster.france-bioinformatique.fr:~/workspace/project_name/results/counts/expression_matrix.txt ./
+```
+
+### Resource Management
+- **SLURM** Workload Manager
+  - Purpose: Job scheduling and resource allocation
+  - Features:
+    * Job queuing and management
+    * Resource monitoring
+    * Multi-node support
+  - Parameters:
+    * CPUs per task: 8
+    * Memory: 64GB
+    * Runtime: 24 hours
+    * Partition: fast
+
+### Version Control and Documentation
+- **Git** (v2.34+)
+  - Purpose: Version control and collaboration
+  - Features:
+    * Change tracking
+    * Branch management
+    * Collaborative development
+
+All tools are configured with parameters optimized for chicken RNA-seq analysis on the IFB cluster. For specific version requirements and compatibility, see `requirements.txt`.
 
 ## Requirements
 See requirements.txt for Python package dependencies. Main requirements include:
@@ -85,7 +231,21 @@ python scripts/plot_expression_matrix.py
 ```
 
 ### IFB Cluster Analysis
-This analysis can be run on the IFB (Institut Français de Bioinformatique) cluster for better performance and resource management. For detailed instructions, see `IFB_GUIDE_UNIVERSAL.md`.
+This analysis can be run on the IFB (Institut Français de Bioinformatique) cluster for better performance and resource management. Two versions of the IFB guide are available:
+
+1. `IFB_GUIDE.md` - A personalized guide with specific paths and settings for the original setup
+2. `IFB_GUIDE_UNIVERSAL.md` - A universal guide that can be adapted for any user
+
+The analysis uses the following IFB-specific scripts:
+- `scripts/download_reference_ifb.sh` - Downloads and prepares the reference genome on the IFB cluster, with SLURM job configuration
+- `scripts/run_chicken_analysis_ifb.sh` - Runs the complete RNA-seq analysis pipeline on the IFB cluster, with SLURM job configuration
+
+These scripts have been specifically configured for the IFB cluster environment, including:
+- SLURM job scheduling parameters
+- IFB-specific module loading
+- Proper resource allocation (CPU, memory, time)
+- IFB-specific paths and environment setup
+- Checkpoint system for long-running jobs
 
 #### Prerequisites
 - An IFB account (request at https://my.cluster.france-bioinformatique.fr/)
@@ -146,118 +306,4 @@ sbatch scripts/prepare_genome.sh
 ```
 
 2. Launch the analysis:
-```bash
-# After genome preparation is complete
-if [ -f "genome/preparation_complete" ]; then
-    sbatch scripts/run_analysis.sh
-else
-    echo "Genome preparation not complete"
-fi
 ```
-
-#### 5. Monitoring Jobs
-- Check job status: `squeue -u $USER`
-- View job details: `scontrol show job JOB_ID`
-- Monitor logs: `tail -f job_name_*.out`
-- Check resource usage: `sstat -j JOB_ID`
-
-#### 6. Retrieving Results
-From your local machine:
-```bash
-cd /path/to/local/project
-scp -r USERNAME@core.cluster.france-bioinformatique.fr:~/workspace/chicken_rnaseq/results/ ./
-```
-
-#### Important Notes
-- Resource Management:
-  ```bash
-  #SBATCH --cpus-per-task=8     # Number of CPUs
-  #SBATCH --mem=32G             # Memory
-  #SBATCH --time=24:00:00       # Time limit
-  ```
-- Directory Structure:
-  - `genome/`: Reference files and indices
-  - `data/`: Raw data
-  - `scripts/`: Analysis scripts
-  - `results/`: Output files
-  - `status/`: Checkpoint files
-- Essential tmux shortcuts:
-  - `Ctrl-b d`: Detach session
-  - `Ctrl-b "`: Split horizontally
-  - `Ctrl-b %`: Split vertically
-  - `Ctrl-b arrows`: Navigate between panes
-  - `Ctrl-b c`: Create new window
-  - `Ctrl-b n`: Next window
-  - `Ctrl-b p`: Previous window
-
-#### Best Practices
-- Use checkpoints in long-running jobs
-- Monitor resource usage
-- Keep logs organized
-- Use appropriate job time limits
-- Clean up unnecessary files regularly
-
-For more detailed instructions and troubleshooting, please refer to `IFB_GUIDE_UNIVERSAL.md`.
-
-## Results
-The analysis reveals expression patterns between high and low shear force groups in chicken breast muscle. Key findings include:
-
-### 1. Sample Correlation Analysis
-The correlation heatmap (sample_correlation_heatmap.pdf) shows the pairwise correlation coefficients between samples from different shear force conditions. This visualization helps identify:
-- Clear clustering of samples by shear force condition
-- High correlation between replicates within each condition
-- Distinct expression patterns between high and low shear force groups
-
-### 2. Principal Component Analysis
-The PCA plot (pca_plot.pdf) demonstrates the separation between high and low shear force groups in reduced dimensional space:
-- Clear segregation between conditions along principal components
-- Tight clustering of biological replicates
-- Explained variance for each principal component
-
-### 3. Differential Expression Analysis
-MA plots (MA_plot.pdf) showing the relationship between mean expression and log fold change:
-- Highlights differentially expressed genes between conditions
-- Shows the distribution of up and down-regulated genes
-- Indicates statistical significance thresholds
-
-### 4. Technical Reproducibility
-Correlation plots between biological replicates demonstrate the quality and reproducibility of the data:
-
-#### High Shear Force Replicates
-The high_shear_force_replicate_correlations.pdf shows:
-- Pairwise comparisons between all high shear force replicates
-- Strong correlation coefficients (R² > 0.95)
-- Consistent expression patterns across replicates
-
-#### Low Shear Force Replicates
-The low_shear_force_replicate_correlations.pdf demonstrates:
-- Pairwise comparisons between all low shear force replicates
-- High technical reproducibility (R² > 0.95)
-- Consistent expression patterns across biological replicates
-
-Key findings from the analysis:
-- Clear separation between high and low shear force groups in both PCA and correlation analysis
-- High reproducibility between biological replicates (R² > 0.95)
-- Distinct differential expression patterns between conditions
-- Identification of shear force-associated gene signatures
-
-## Contributing
-Please feel free to submit issues and pull requests.
-
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Citation
-If you use this analysis pipeline, please cite both this repository and the original data source:
-
-```
-Original Data:
-Piórkowska K, et al. (2016). Genome-wide RNA-Seq analysis of breast muscles of two broiler 
-chicken groups differing in shear force. Animal Genetics, 47(1):68-80.
-
-Analysis Pipeline:
-Nguyen A (2024) - Chicken Muscle Shear Force RNA-seq Analysis: A reproduction study
-```
-
-## Contact
-For questions about this reproduction analysis, please open a GitHub issue or contact Alexis NGUYEN (alexisnguyen97@yahoo.fr) 

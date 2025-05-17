@@ -9,6 +9,31 @@ This guide provides instructions for running RNA-seq analyses on the IFB (Instit
 - SSH client installed on your local machine
 - Your IFB username and password
 
+## Important Note About Directory Paths
+The paths used in this guide are examples and will need to be adapted based on your IFB account organization. Common base directories on IFB include:
+- `~/workspace/` - General workspace directory
+- `~/work/` - Work directory with larger storage allocation
+- `~/projects/` - Project-specific directory
+- `~/ondemand/data/sys/dashboard/batch_connect/sys/jupyter/core/` - Jupyter-related workspace
+
+Before running any scripts, make sure to:
+1. Check your IFB account structure and available directories
+2. Modify all paths in the scripts to match your account organization
+3. Ensure you have sufficient storage space in your chosen directory
+
+Example of path customization in scripts:
+```bash
+# Original path
+WORK_DIR="~/workspace/project_name"
+
+# Modify according to your IFB organization, e.g.:
+WORK_DIR="~/work/project_name"  # If using work directory
+# or
+WORK_DIR="~/projects/project_name"  # If using projects directory
+# or
+WORK_DIR="~/ondemand/data/sys/dashboard/batch_connect/sys/jupyter/core/project_name"  # If using Jupyter workspace
+```
+
 ## 1. Cluster Connection and Setup
 
 1. Connect to the cluster:
