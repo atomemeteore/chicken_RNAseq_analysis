@@ -213,22 +213,26 @@ See requirements.txt for Python package dependencies. Main requirements include:
 
 ## Usage
 
-### Local Analysis
-1. Clone the repository:
-```bash
-git clone https://github.com/username/chicken_shear_force.git
-cd chicken_shear_force
-```
+The analysis is performed in two parts:
 
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+1. Main RNA-seq Processing (On IFB Cluster)
+   - Quality control
+   - Read alignment
+   - Feature counting
+   - See `IFB_GUIDE.md` or `IFB_GUIDE_UNIVERSAL.md` for detailed instructions
 
-3. Run the analysis pipeline:
-```bash
-python scripts/plot_expression_matrix.py
-```
+2. Statistical Analysis (Local)
+   - Transfer count data from IFB:
+   ```bash
+   # From your local machine
+   scp USERNAME@core.cluster.france-bioinformatique.fr:~/workspace/project_name/results/counts/expression_matrix.txt ./
+   ```
+   - Run R analysis:
+   ```bash
+   Rscript scripts/create_expression_atlas.R
+   ```
+
+Note: The main data processing is performed on the IFB cluster due to computational requirements, while the final statistical analysis and visualization are done locally using R.
 
 ### IFB Cluster Analysis
 This analysis can be run on the IFB (Institut Français de Bioinformatique) cluster for better performance and resource management. Two versions of the IFB guide are available:
