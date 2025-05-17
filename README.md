@@ -73,36 +73,37 @@ python scripts/plot_expression_matrix.py
 The analysis reveals expression patterns between high and low shear force groups in chicken breast muscle. Key findings include:
 
 ### 1. Sample Correlation Analysis
-The heatmap below shows the correlation between samples from different shear force conditions:
-
-![Sample Correlation Heatmap](plots/sample_correlation_heatmap.png)
+The correlation heatmap (sample_correlation_heatmap.pdf) shows the pairwise correlation coefficients between samples from different shear force conditions. This visualization helps identify:
+- Clear clustering of samples by shear force condition
+- High correlation between replicates within each condition
+- Distinct expression patterns between high and low shear force groups
 
 ### 2. Principal Component Analysis
-PCA analysis reveals separation between high and low shear force groups:
-
-![PCA Plot](plots/pca_plot.png)
+The PCA plot (pca_plot.pdf) demonstrates the separation between high and low shear force groups in reduced dimensional space:
+- Clear segregation between conditions along principal components
+- Tight clustering of biological replicates
+- Explained variance for each principal component
 
 ### 3. Differential Expression Analysis
-MA plots showing the distribution of differentially expressed genes between shear force conditions:
-
-<details>
-<summary>Click to expand MA plots</summary>
-
-![Shear Force MA Plot](plots/shear_force_MA_plot.png)
-</details>
+MA plots (MA_plot.pdf) showing the relationship between mean expression and log fold change:
+- Highlights differentially expressed genes between conditions
+- Shows the distribution of up and down-regulated genes
+- Indicates statistical significance thresholds
 
 ### 4. Technical Reproducibility
-Scatter plots showing correlation between biological replicates:
-
-<details>
-<summary>Click to expand replicate plots</summary>
+Correlation plots between biological replicates demonstrate the quality and reproducibility of the data:
 
 #### High Shear Force Replicates
-![High Shear Force Replicates](plots/high_shear_replicate_scatter.png)
+The high_shear_force_replicate_correlations.pdf shows:
+- Pairwise comparisons between all high shear force replicates
+- Strong correlation coefficients (R² > 0.95)
+- Consistent expression patterns across replicates
 
 #### Low Shear Force Replicates
-![Low Shear Force Replicates](plots/low_shear_replicate_scatter.png)
-</details>
+The low_shear_force_replicate_correlations.pdf demonstrates:
+- Pairwise comparisons between all low shear force replicates
+- High technical reproducibility (R² > 0.95)
+- Consistent expression patterns across biological replicates
 
 Key findings from the analysis:
 - Clear separation between high and low shear force groups in both PCA and correlation analysis
