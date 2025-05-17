@@ -1,27 +1,27 @@
-# Chicken RNA-seq Analysis Pipeline
+# Chicken Muscle Shear Force RNA-seq Analysis
 
-## Table des matières
-- [Introduction](#introduction)
-- [Prérequis](#prérequis)
+## Table of Contents
+- [Chicken Muscle Shear Force RNA-seq Analysis](#chicken-muscle-shear-force-rna-seq-analysis)
+- [Project Overview](#project-overview)
 - [Data Source](#data-source)
 - [Reference Genome](#reference-genome)
 - [Directory Structure](#directory-structure)
-- [Installation et Configuration](#installation-et-configuration)
-  - [Configuration sur IFB](#configuration-sur-ifb)
-  - [Configuration Locale](#configuration-locale)
-- [Pipeline d'Analyse](#pipeline-danalyse)
-  - [Téléchargement des Données](#téléchargement-des-données)
-  - [Contrôle Qualité](#contrôle-qualité)
-  - [Alignement](#alignement)
+- [Installation and Setup](#installation-and-setup)
+  - [IFB Cluster Setup](#ifb-cluster-setup)
+  - [Local Setup](#local-setup)
+- [Analysis Pipeline](#analysis-pipeline)
+  - [Data Download](#data-download)
+  - [Quality Control](#quality-control)
+  - [Alignment](#alignment)
   - [Quantification](#quantification)
-- [Résultats](#résultats)
+- [Results](#results)
   - [Key Findings Summary](#key-findings-summary)
   - [Sample Correlation Analysis](#1-sample-correlation-analysis)
   - [Principal Component Analysis](#2-principal-component-analysis)
   - [Differential Expression Analysis](#3-differential-expression-analysis)
 - [Data Processing and Analysis Details](#data-processing-and-analysis-details)
   - [Expression Matrix Processing Pipeline](#expression-matrix-processing-pipeline)
-- [Remerciements](#remerciements)
+- [Acknowledgments](#acknowledgments)
 
 # Chicken Muscle Shear Force RNA-seq Analysis
 
