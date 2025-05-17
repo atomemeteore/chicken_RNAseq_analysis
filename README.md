@@ -89,6 +89,64 @@ This repository contains an RNA-seq analysis pipeline that examines gene express
      * Gene-specific visualizations
      * Group comparisons
 
+## Results
+The analysis reveals expression patterns between high and low shear force groups in chicken breast muscle. Key findings include:
+
+### 1. Sample Correlation Analysis
+The correlation heatmap shows the pairwise correlation coefficients between samples from different shear force conditions:
+
+![Sample Correlation Heatmap](images/sample_correlation_heatmap.png)
+
+This visualization helps identify:
+- Clear clustering of samples by shear force condition
+- High correlation between replicates within each condition
+- Distinct expression patterns between high and low shear force groups
+
+### 2. Principal Component Analysis
+The PCA plot demonstrates the separation between high and low shear force groups in reduced dimensional space:
+
+![PCA Plot](images/pca_plot.png)
+
+Key observations:
+- Clear segregation between conditions along principal components
+- Tight clustering of biological replicates
+- Explained variance for each principal component
+
+### 3. Differential Expression Analysis
+MA plots showing the relationship between mean expression and log fold change:
+
+![MA Plot](images/MA_plot.png)
+
+This plot reveals:
+- Highlights differentially expressed genes between conditions
+- Shows the distribution of up and down-regulated genes
+- Indicates statistical significance thresholds
+
+### 4. Technical Reproducibility
+Correlation plots between biological replicates demonstrate the quality and reproducibility of the data:
+
+#### High Shear Force Replicates
+![High Shear Force Correlations](images/high_shear_force_replicate_correlations.png)
+
+The correlations show:
+- Pairwise comparisons between all high shear force replicates
+- Strong correlation coefficients (R² > 0.95)
+- Consistent expression patterns across replicates
+
+#### Low Shear Force Replicates
+![Low Shear Force Correlations](images/low_shear_force_replicate_correlations.png)
+
+The correlations demonstrate:
+- Pairwise comparisons between all low shear force replicates
+- High technical reproducibility (R² > 0.95)
+- Consistent expression patterns across biological replicates
+
+### Key Findings Summary
+- Clear separation between high and low shear force groups in both PCA and correlation analysis
+- High reproducibility between biological replicates (R² > 0.95)
+- Distinct differential expression patterns between conditions
+- Identification of shear force-associated gene signatures
+
 ## Tools and Dependencies
 
 ### Core Analysis Tools
@@ -306,8 +364,34 @@ chmod +x scripts/*.sh
 #### 4. Running Analysis
 1. Download and index reference genome:
 ```bash
-sbatch scripts/prepare_genome.sh
+# Submit the genome preparation job
+sbatch scripts/download_reference_ifb.sh
+
+# Monitor the job
+watch -n 30 'squeue -u $USER'
+tail -f download_ref_*.out
 ```
 
-2. Launch the analysis:
+2. Launch the RNA-seq analysis:
+```bash
+# Check if genome preparation is complete
+if [ -f "genome/reference_preparation_complete" ]; then
+    # Submit the analysis job
+    sbatch scripts/run_chicken_analysis_ifb.sh
+    
+    # Monitor the job
+    watch -n 30 'squeue -u $USER'
+    tail -f chicken_rnaseq_*.out
+else
+    echo "Genome preparation not complete"
+fi
+```
+
+3. Monitor progress in the results directory:
+```bash
+# Check the progress of different steps
+ls -l results/{qc,alignment,counts}/
+
+# View MultiQC report when available
+firefox results/qc/multiqc_report.html  # or your preferred browser
 ```
