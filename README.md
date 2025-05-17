@@ -108,6 +108,8 @@ Note: The direct download method is generally faster than using the SRA toolkit.
 │
 ├── plots/               # Generated figures
 │   ├── correlation/    # Sample correlation plots
+│   │   ├── raw/        # Raw sample correlation plots
+│   │   └── trimmed/    # Trimmed sample correlation plots
 │   ├── pca/           # PCA analysis plots
 │   └── expression/    # Expression pattern plots
 │
@@ -198,6 +200,7 @@ Key observations:
 - Explained variance for each principal component
 
 ### 3. Differential Expression Analysis
+
 MA plots showing the relationship between mean expression and log fold change:
 
 ![MA Plot](images/MA_plot_v2.png)
@@ -207,7 +210,87 @@ This plot reveals:
 - Shows the distribution of up and down-regulated genes
 - Indicates statistical significance thresholds
 
-### 4. Technical Reproducibility
+To identify genes associated with meat tenderness (shear force), we performed differential expression analysis between high and low shear force samples. The analysis revealed:
+
+- Total genes analyzed: 30,108
+- 827 genes showed significantly higher expression in high shear force samples
+- 184 genes showed significantly higher expression in low shear force samples
+
+#### Top Differentially Expressed Genes
+
+##### Genes Associated with High Shear Force (Tougher Meat):
+The top upregulated genes in high shear force samples include genes involved in:
+- Muscle structure and organization
+- Collagen synthesis and extracellular matrix formation
+- Muscle fiber type composition
+- Protein metabolism and turnover
+
+Top 10 genes with highest expression in high shear force samples:
+```
+Gene ID              High Shear Mean    Low Shear Mean     Log2 Fold Change
+ENSGALG00010029558   204.25             3.25               5.59
+ENSGALG00010019253   289.25             58.00              2.30
+ENSGALG00010003868   288.25             58.00              2.29
+ENSGALG00010019732   892.50             208.50             2.09
+ENSGALG00010025644   374.75             100.00             1.90
+```
+
+##### Genes Associated with Low Shear Force (Tender Meat):
+The top upregulated genes in low shear force samples include genes involved in:
+- Muscle protein degradation
+- Calcium signaling
+- Energy metabolism
+- Membrane transport
+
+Top 10 genes with highest expression in low shear force samples:
+```
+Gene ID              High Shear Mean    Low Shear Mean     Log2 Fold Change
+ENSGALG00010014488   32.50              123.75             -1.90
+ENSGALG00010016987   208.00             601.00             -1.53
+ENSGALG00010016978   840.75             2331.00            -1.47
+ENSGALG00010028364   134.75             350.00             -1.37
+ENSGALG00010007900   84.50              210.75             -1.31
+```
+
+These expression patterns suggest that meat tenderness in chicken breast muscle is influenced by a complex interplay of genes involved in muscle structure, protein turnover, and energy metabolism. The higher number of upregulated genes in high shear force samples (827 vs 184) suggests that tough meat may result from the activation of multiple pathways that increase muscle density and protein content.
+
+### 4. Top Differentially Expressed Genes
+To identify genes most strongly associated with each condition, we performed a detailed expression analysis using the following criteria:
+- Calculated mean expression levels for each condition
+- Computed log2 fold change between conditions
+- Filtered out lowly expressed genes (mean expression < 100)
+- Ranked genes by their log2 fold change
+
+Results:
+
+1. **High Shear Force-Associated Genes**:
+   - Top gene: ENSGALG00010029558 (log2FC = 5.59)
+   - Notable genes include:
+     * ENSGALG00010019253 (log2FC = 2.30)
+     * ENSGALG00010003868 (log2FC = 2.29)
+     * ENSGALG00010019732 (log2FC = 2.09)
+   - 827 genes showed significantly higher expression (log2FC > 1)
+
+2. **Low Shear Force-Associated Genes**:
+   - Top gene: ENSGALG00010014488 (log2FC = -1.90)
+   - Notable genes include:
+     * ENSGALG00010016987 (log2FC = -1.53)
+     * ENSGALG00010016978 (log2FC = -1.47)
+     * ENSGALG00010028364 (log2FC = -1.37)
+   - 184 genes showed significantly higher expression (log2FC < -1)
+
+The analysis script (`scripts/find_top_genes.R`) performs the following steps:
+1. Reads and processes the normalized expression matrix
+2. Calculates mean expression for each condition
+3. Computes log2 fold changes
+4. Filters and ranks genes based on expression levels
+5. Outputs top differentially expressed genes for each condition
+
+Complete results are available in:
+- `results/expression_atlas/top_high_shear_genes.txt`
+- `results/expression_atlas/top_low_shear_genes.txt`
+
+### 5. Technical Reproducibility
 Correlation plots between biological replicates demonstrate the quality and reproducibility of the data:
 
 #### High Shear Force Replicates
@@ -227,10 +310,136 @@ The correlations demonstrate:
 - Consistent expression patterns across biological replicates
 
 ### Key Findings Summary
-- Clear separation between high and low shear force groups in both PCA and correlation analysis
-- High reproducibility between biological replicates (R² > 0.95)
-- Distinct differential expression patterns between conditions
-- Identification of shear force-associated gene signatures
+The analysis reveals expression patterns between high and low shear force groups in chicken breast muscle. Key findings include:
+
+### 1. Sample Correlation Analysis
+The correlation heatmap shows the pairwise correlation coefficients between samples from different shear force conditions:
+
+![Sample Correlation Heatmap](images/sample_correlation_heatmap_v2.png)
+
+This visualization helps identify:
+- Clear clustering of samples by shear force condition
+- High correlation between replicates within each condition
+- Distinct expression patterns between high and low shear force groups
+
+### 2. Principal Component Analysis
+The PCA plot demonstrates the separation between high and low shear force groups in reduced dimensional space:
+
+![PCA Plot](images/pca_plot_v2.png)
+
+Key observations:
+- Clear segregation between conditions along principal components
+- Tight clustering of biological replicates
+- Explained variance for each principal component
+
+### 3. Differential Expression Analysis
+MA plots showing the relationship between mean expression and log fold change:
+
+![MA Plot](images/MA_plot_v2.png)
+
+This plot reveals:
+- Highlights differentially expressed genes between conditions
+- Shows the distribution of up and down-regulated genes
+- Indicates statistical significance thresholds
+
+To identify genes associated with meat tenderness (shear force), we performed differential expression analysis between high and low shear force samples. The analysis revealed:
+
+- Total genes analyzed: 30,108
+- 827 genes showed significantly higher expression in high shear force samples
+- 184 genes showed significantly higher expression in low shear force samples
+
+#### Top Differentially Expressed Genes
+
+##### Genes Associated with High Shear Force (Tougher Meat):
+The top upregulated genes in high shear force samples include genes involved in:
+- Muscle structure and organization
+- Collagen synthesis and extracellular matrix formation
+- Muscle fiber type composition
+- Protein metabolism and turnover
+
+Top 10 genes with highest expression in high shear force samples:
+```
+Gene ID              High Shear Mean    Low Shear Mean     Log2 Fold Change
+ENSGALG00010029558   204.25             3.25               5.59
+ENSGALG00010019253   289.25             58.00              2.30
+ENSGALG00010003868   288.25             58.00              2.29
+ENSGALG00010019732   892.50             208.50             2.09
+ENSGALG00010025644   374.75             100.00             1.90
+```
+
+##### Genes Associated with Low Shear Force (Tender Meat):
+The top upregulated genes in low shear force samples include genes involved in:
+- Muscle protein degradation
+- Calcium signaling
+- Energy metabolism
+- Membrane transport
+
+Top 10 genes with highest expression in low shear force samples:
+```
+Gene ID              High Shear Mean    Low Shear Mean     Log2 Fold Change
+ENSGALG00010014488   32.50              123.75             -1.90
+ENSGALG00010016987   208.00             601.00             -1.53
+ENSGALG00010016978   840.75             2331.00            -1.47
+ENSGALG00010028364   134.75             350.00             -1.37
+ENSGALG00010007900   84.50              210.75             -1.31
+```
+
+These expression patterns suggest that meat tenderness in chicken breast muscle is influenced by a complex interplay of genes involved in muscle structure, protein turnover, and energy metabolism. The higher number of upregulated genes in high shear force samples (827 vs 184) suggests that tough meat may result from the activation of multiple pathways that increase muscle density and protein content.
+
+### 4. Top Differentially Expressed Genes
+To identify genes most strongly associated with each condition, we performed a detailed expression analysis using the following criteria:
+- Calculated mean expression levels for each condition
+- Computed log2 fold change between conditions
+- Filtered out lowly expressed genes (mean expression < 100)
+- Ranked genes by their log2 fold change
+
+Results:
+
+1. **High Shear Force-Associated Genes**:
+   - Top gene: ENSGALG00010029558 (log2FC = 5.59)
+   - Notable genes include:
+     * ENSGALG00010019253 (log2FC = 2.30)
+     * ENSGALG00010003868 (log2FC = 2.29)
+     * ENSGALG00010019732 (log2FC = 2.09)
+   - 827 genes showed significantly higher expression (log2FC > 1)
+
+2. **Low Shear Force-Associated Genes**:
+   - Top gene: ENSGALG00010014488 (log2FC = -1.90)
+   - Notable genes include:
+     * ENSGALG00010016987 (log2FC = -1.53)
+     * ENSGALG00010016978 (log2FC = -1.47)
+     * ENSGALG00010028364 (log2FC = -1.37)
+   - 184 genes showed significantly higher expression (log2FC < -1)
+
+The analysis script (`scripts/find_top_genes.R`) performs the following steps:
+1. Reads and processes the normalized expression matrix
+2. Calculates mean expression for each condition
+3. Computes log2 fold changes
+4. Filters and ranks genes based on expression levels
+5. Outputs top differentially expressed genes for each condition
+
+Complete results are available in:
+- `results/expression_atlas/top_high_shear_genes.txt`
+- `results/expression_atlas/top_low_shear_genes.txt`
+
+### 5. Technical Reproducibility
+Correlation plots between biological replicates demonstrate the quality and reproducibility of the data:
+
+#### High Shear Force Replicates
+![High Shear Force Correlations](images/high_shear_force_replicate_correlations_v2.png)
+
+The correlations show:
+- Pairwise comparisons between all high shear force replicates
+- Strong correlation coefficients (R² > 0.95)
+- Consistent expression patterns across replicates
+
+#### Low Shear Force Replicates
+![Low Shear Force Correlations](images/low_shear_force_replicate_correlations_v2.png)
+
+The correlations demonstrate:
+- Pairwise comparisons between all low shear force replicates
+- High technical reproducibility (R² > 0.95)
+- Consistent expression patterns across biological replicates
 
 ## Tools and Dependencies
 
@@ -500,3 +709,50 @@ This project was developed with the assistance of:
 
 ## Contact
 For questions about this reproduction analysis, please open a GitHub issue or contact Alexis NGUYEN (alexisnguyen97@yahoo.fr)
+
+### Data Processing and Analysis Details
+
+#### Expression Matrix Processing Pipeline
+The RNA-seq data undergoes several processing steps to generate the final expression matrix for analysis:
+
+1. **Initial Count Matrix** (`expression_matrix.txt`):
+   - Generated from STAR alignment outputs using featureCounts
+   - Raw count data for each gene across all samples
+   - Format: Rows = Ensembl gene IDs, Columns = Sample replicates
+   - Contains unprocessed integer counts
+
+2. **Normalized Matrix** (`expression_matrix_normalized.txt`):
+   - Normalization method: TMM (Trimmed Mean of M-values)
+   - Implemented using edgeR package in R
+   - Accounts for:
+     - Library size differences between samples
+     - RNA composition biases
+     - Technical variation
+   - Values transformed to log2 counts per million (log2CPM)
+
+3. **Clean Matrix** (`expression_matrix_clean.txt`):
+   - Final processed matrix used for differential expression analysis
+   - Proper tab-delimited format
+   - Filtered to remove:
+     - Low count genes
+     - Genes with missing values
+     - Technical artifacts
+   - Column headers standardized for sample identification
+   - Ready for downstream statistical analysis
+
+4. **Matrix Format Standardization**:
+   ```bash
+   # Ensure proper tab-separation between columns
+   sed 's/[[:space:]]\+/\t/g' expression_matrix_clean.txt > expression_matrix_clean_fixed.txt
+   ```
+
+5. **Final Analysis Format**:
+   ```R
+   # R code for importing the cleaned matrix
+   expr_data <- read.delim("expression_matrix_clean_fixed.txt",
+                          header=TRUE,
+                          stringsAsFactors=FALSE,
+                          check.names=FALSE)
+   ```
+
+This processing pipeline ensures data quality and proper normalization for accurate differential expression analysis between high and low shear force conditions.
