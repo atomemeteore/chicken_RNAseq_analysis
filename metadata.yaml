@@ -1,12 +1,21 @@
 ---
 study:
   title: "Shear force analysis in chicken breast muscle"
-  authors: "Piórkowska K, et al."
-  publication:
-    journal: "Animal Genetics"
-    year: 2016
-    doi: "10.1111/age.12409"
+  potential_source:
+    authors: "Piórkowska K, et al."
+    publication:
+      journal: "Animal Genetics"
+      year: 2016
+      doi: "10.1111/age.12409"
+    verification_status: "needs_verification"
+    verification_note: "Original article is not publicly accessible. Association between the data and publication needs confirmation."
   bioproject: "PRJNA297364"
+
+data_characteristics:
+  sequencing_platform: "Illumina HiScanSQ"
+  library_type: "RNA-seq"
+  read_type: "single-end"
+  experimental_design: "Four biological replicates per condition"
 
 samples:
   high_shear:
@@ -28,24 +37,31 @@ samples:
       description: "High shear force sample, biological replicate 4"
   
   low_shear:
-    - accession: "SRR2554344"
-      replicate: 4
-      condition: "low_shear"
-      description: "Low shear force sample, biological replicate 4"
-    - accession: "SRR2554345"
-      replicate: 3
-      condition: "low_shear"
-      description: "Low shear force sample, biological replicate 3"
-    - accession: "SRR2554363"
-      replicate: 2
-      condition: "low_shear"
-      description: "Low shear force sample, biological replicate 2"
     - accession: "SRR2554362"
       replicate: 1
       condition: "low_shear"
       description: "Low shear force sample, biological replicate 1"
+    - accession: "SRR2554363"
+      replicate: 2
+      condition: "low_shear"
+      description: "Low shear force sample, biological replicate 2"
+    - accession: "SRR2554345"
+      replicate: 3
+      condition: "low_shear"
+      description: "Low shear force sample, biological replicate 3"
+    - accession: "SRR2554344"
+      replicate: 4
+      condition: "low_shear"
+      description: "Low shear force sample, biological replicate 4"
 
 data_processing:
-  sequencing_platform: "Illumina HiScanSQ"
-  library_type: "RNA-seq"
-  read_type: "single-end" 
+  platform: "IFB cluster"
+  pipeline_version: "1.0.0"
+  analysis_date: "2024"
+  repository_url: "https://github.com/username/chicken_shear_force"
+  
+notes:
+  - "This is an independent reproduction study"
+  - "The association between the SRA data and the cited publication needs verification"
+  - "Users are encouraged to verify the data source independently"
+  - "The BioProject and SRA accession numbers are confirmed" 
