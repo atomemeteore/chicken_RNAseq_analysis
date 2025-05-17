@@ -23,15 +23,100 @@ This repository contains an RNA-seq analysis pipeline that examines gene express
 - **Data Processing**: RNA-seq analysis performed on IFB cluster
 - **Important Note**: While the BioProject and SRA accession numbers are confirmed, the association with the cited publication needs verification due to limited access to the original article. Users are encouraged to verify the data source independently.
 
+## Reference Genome
+- **Version**: Gallus gallus bGalGal1.mat.broiler.GRCg7b (Ensembl Release 110)
+- **Source**: Ensembl
+- **Files**:
+  - **Genome FASTA**: Gallus_gallus.bGalGal1.mat.broiler.GRCg7b.dna.toplevel.fa
+  - **Gene Annotations**: Gallus_gallus.bGalGal1.mat.broiler.GRCg7b.110.gtf
+- **URLs**:
+  - Genome: https://ftp.ensembl.org/pub/release-110/fasta/gallus_gallus/dna/Gallus_gallus.bGalGal1.mat.broiler.GRCg7b.dna.toplevel.fa.gz
+  - GTF: https://ftp.ensembl.org/pub/release-110/gtf/gallus_gallus/Gallus_gallus.bGalGal1.mat.broiler.GRCg7b.110.gtf.gz
+- **Genome Indexing**:
+  - Indexed using STAR aligner
+  - Parameters:
+    * sjdbOverhang: 99
+    * Multi-threaded processing enabled
+    * Memory-optimized for cluster environment
+
+### Data Download Instructions
+Due to the large size of the raw sequencing files, they are not included in this repository. To download the data:
+
+1. Using direct SRA links (faster method):
+```bash
+# Create data directory
+mkdir -p data/raw
+cd data/raw
+
+# Download each sample using direct links
+# High shear force samples
+wget https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR2554364/SRR2554364 -O SRR2554364.sra
+wget https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR2554365/SRR2554365 -O SRR2554365.sra
+wget https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR2554366/SRR2554366 -O SRR2554366.sra
+wget https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR2554367/SRR2554367 -O SRR2554367.sra
+
+# Low shear force samples
+wget https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR2554362/SRR2554362 -O SRR2554362.sra
+wget https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR2554363/SRR2554363 -O SRR2554363.sra
+wget https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR2554345/SRR2554345 -O SRR2554345.sra
+wget https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR2554344/SRR2554344 -O SRR2554344.sra
+
+# Convert SRA to FASTQ format
+for sra in *.sra; do
+    fastq-dump --gzip "$sra"
+done
+
+# Clean up SRA files (optional)
+rm *.sra
+```
+
+2. Alternative method using SRA toolkit:
+```bash
+# Install SRA toolkit if not already installed
+# conda install -c bioconda sra-tools
+
+# Download samples
+prefetch SRR2554364 SRR2554365 SRR2554366 SRR2554367 \
+        SRR2554362 SRR2554363 SRR2554345 SRR2554344
+
+# Convert to FASTQ format
+for acc in SRR2554364 SRR2554365 SRR2554366 SRR2554367 \
+          SRR2554362 SRR2554363 SRR2554345 SRR2554344; do
+    fastq-dump --gzip "$acc"
+done
+```
+
+Note: The direct download method is generally faster than using the SRA toolkit. Choose the method that works best for your setup.
+
 ## Directory Structure
 ```
 .
-├── data/               # Raw sequencing data and metadata
-├── genome/            # Reference genome and annotation files
-├── scripts/           # Analysis and plotting scripts
-├── results/           # Analysis output files
-├── plots/             # Generated figures and visualizations
-└── requirements.txt   # Python dependencies
+├── scripts/              # Analysis scripts
+│   ├── download_reference_ifb.sh    # Script to download and prepare reference
+│   ├── run_chicken_analysis_ifb.sh  # Main analysis pipeline for IFB
+│   └── create_expression_atlas.R    # R script for expression analysis
+│
+├── results/              # Analysis results (generated during pipeline run)
+│   ├── qc/              # Quality control reports
+│   │   ├── raw/         # FastQC reports for raw data
+│   │   └── trimmed/     # FastQC reports for trimmed data
+│   ├── alignment/       # STAR alignment outputs
+│   │   ├── logs/       # Alignment log files
+│   │   └── bam/        # Sorted and indexed BAM files
+│   ├── counts/         # Feature count matrices
+│   └── expression_atlas/ # Final expression analysis results
+│
+├── plots/               # Generated figures
+│   ├── correlation/    # Sample correlation plots
+│   ├── pca/           # PCA analysis plots
+│   └── expression/    # Expression pattern plots
+│
+├── requirements.txt    # Python package dependencies
+├── environment.yml    # Conda environment specification
+└── README.md         # Project documentation
+
+Note: The data/ and genome/ directories are meaned to be created during analysis when running the pipeline. 
+See the Data Download Instructions and Reference Genome sections for details on how these are set up.
 ```
 
 ## Analysis Pipeline
