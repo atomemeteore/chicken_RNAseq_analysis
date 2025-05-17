@@ -1,0 +1,9 @@
+.	Basic Statistics	Per Base Sequence Quality	Per Sequence Quality Scores	Per Base Sequence Content	Per Sequence GC Content	Per Base N Content	Sequence Length Distribution	Sequence Duplication Levels	Overrepresented Sequences	Adapter Content
+SRR2554344_1_liver_rep1	1	1	1	0.25	1	1	0.5	0.25	1	1
+SRR2554345_1_liver_rep2	1	1	1	0.25	1	1	0.5	0.25	1	1
+SRR2554362_1_muscle_rep1	1	1	1	0.25	1	1	0.5	0.25	1	1
+SRR2554363_1_muscle_rep2	1	1	1	0.25	1	1	0.5	0.25	1	1
+SRR2554364_1_brain_rep1	1	1	1	0.25	1	1	0.5	0.25	1	1
+SRR2554365_1_brain_rep2	1	1	1	0.25	1	1	0.5	0.25	1	1
+SRR2554366_1_kidney_rep1	1	1	1	0.25	1	1	0.5	0.25	1	1
+SRR2554367_1_kidney_rep2	1	1	1	0.25	1	1	0.5	0.25	1	1

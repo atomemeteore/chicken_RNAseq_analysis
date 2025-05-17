@@ -1,0 +1,12 @@
+# Python packages
+multiqc==1.14
+pandas>=1.3.0
+numpy>=1.21.0
+
+# R packages (install via BiocManager)
+# DESeq2
+# edgeR
+# ggplot2
+# pheatmap
+# RColorBrewer
+# gridExtra 

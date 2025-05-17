@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+
+# Data and results
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.bam
+*.sam
+*.bai
+*.bigwig
+*.bw
+*.bedgraph
+*.bed
+*.gtf.gz
+*.fa.gz
+
+# Temporary files
+tmp/
+temp/
+.DS_Store
+.ipynb_checkpoints/
+*.swp
+*~
+
+# Large data files
+data/raw/
+genome/*.fa
+genome/*.gtf
+
+# Keep example data
+!data/example/
+!genome/example/
+
+# IDE
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project 
