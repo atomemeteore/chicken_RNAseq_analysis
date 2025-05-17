@@ -1,11 +1,11 @@
 # Sample information
 declare -A samples=(
-    ["SRR2554344"]="liver_rep1"
-    ["SRR2554345"]="liver_rep2"
-    ["SRR2554362"]="muscle_rep1"
-    ["SRR2554363"]="muscle_rep2"
-    ["SRR2554364"]="brain_rep1"
-    ["SRR2554365"]="brain_rep2"
-    ["SRR2554366"]="kidney_rep1"
-    ["SRR2554367"]="kidney_rep2"
+    ["SRR2554364"]="high_shear_rep1"
+    ["SRR2554365"]="high_shear_rep2"
+    ["SRR2554366"]="high_shear_rep3"
+    ["SRR2554367"]="high_shear_rep4"
+    ["SRR2554344"]="low_shear_rep4"
+    ["SRR2554345"]="low_shear_rep3"
+    ["SRR2554363"]="low_shear_rep2"
+    ["SRR2554362"]="low_shear_rep1"
 )

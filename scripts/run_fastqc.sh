@@ -5,9 +5,9 @@ set -e
 
 # Set up base directories
 BASE_DIR="$(pwd)"
-DATA_DIR="${BASE_DIR}/chicken_atlas/data/raw"
-QC_DIR="${BASE_DIR}/chicken_atlas/results/qc/fastqc"
-SCRIPT_DIR="${BASE_DIR}/chicken_atlas/scripts"
+DATA_DIR="${BASE_DIR}/chicken_shear_force/data/raw"
+QC_DIR="${BASE_DIR}/chicken_shear_force/results/qc/fastqc"
+SCRIPT_DIR="${BASE_DIR}/chicken_shear_force/scripts"
 
 # Create output directory
 mkdir -p "${QC_DIR}"

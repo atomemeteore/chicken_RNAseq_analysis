@@ -1,0 +1,9 @@
+Sample	Condition	Total_Genes	Expressed_Genes	Filtered_Genes
+high_shear_rep1	High Shear Force	15693	14057	14279
+high_shear_rep2	High Shear Force	16133	14506	14473
+high_shear_rep3	High Shear Force	16565	14887	14593
+high_shear_rep4	High Shear Force	16078	14482	14481
+low_shear_rep1	Low Shear Force	15778	14162	14352
+low_shear_rep2	Low Shear Force	16018	14325	14409
+low_shear_rep3	Low Shear Force	15250	13716	14126
+low_shear_rep4	Low Shear Force	15771	14178	14328

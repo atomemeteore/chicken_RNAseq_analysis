@@ -1,6 +1,6 @@
 ---
 study:
-  title: "Tissue-specific transcriptional profiles in chicken"
+  title: "Shear force analysis in chicken breast muscle"
   authors: "Piórkowska K, et al."
   publication:
     journal: "Animal Genetics"
@@ -9,45 +9,41 @@ study:
   bioproject: "PRJNA297364"
 
 samples:
-  liver:
-    - accession: "SRR2554344"
-      replicate: 1
-      tissue: "liver"
-      description: "Liver tissue sample, biological replicate 1"
-    - accession: "SRR2554345"
-      replicate: 2
-      tissue: "liver"
-      description: "Liver tissue sample, biological replicate 2"
-  
-  muscle:
-    - accession: "SRR2554362"
-      replicate: 1
-      tissue: "muscle"
-      description: "Muscle tissue sample, biological replicate 1"
-    - accession: "SRR2554363"
-      replicate: 2
-      tissue: "muscle"
-      description: "Muscle tissue sample, biological replicate 2"
-  
-  brain:
+  high_shear:
     - accession: "SRR2554364"
       replicate: 1
-      tissue: "brain"
-      description: "Brain tissue sample, biological replicate 1"
+      condition: "high_shear"
+      description: "High shear force sample, biological replicate 1"
     - accession: "SRR2554365"
       replicate: 2
-      tissue: "brain"
-      description: "Brain tissue sample, biological replicate 2"
-  
-  kidney:
+      condition: "high_shear"
+      description: "High shear force sample, biological replicate 2"
     - accession: "SRR2554366"
-      replicate: 1
-      tissue: "kidney"
-      description: "Kidney tissue sample, biological replicate 1"
+      replicate: 3
+      condition: "high_shear"
+      description: "High shear force sample, biological replicate 3"
     - accession: "SRR2554367"
+      replicate: 4
+      condition: "high_shear"
+      description: "High shear force sample, biological replicate 4"
+  
+  low_shear:
+    - accession: "SRR2554344"
+      replicate: 4
+      condition: "low_shear"
+      description: "Low shear force sample, biological replicate 4"
+    - accession: "SRR2554345"
+      replicate: 3
+      condition: "low_shear"
+      description: "Low shear force sample, biological replicate 3"
+    - accession: "SRR2554363"
       replicate: 2
-      tissue: "kidney"
-      description: "Kidney tissue sample, biological replicate 2"
+      condition: "low_shear"
+      description: "Low shear force sample, biological replicate 2"
+    - accession: "SRR2554362"
+      replicate: 1
+      condition: "low_shear"
+      description: "Low shear force sample, biological replicate 1"
 
 data_processing:
   sequencing_platform: "Illumina HiScanSQ"

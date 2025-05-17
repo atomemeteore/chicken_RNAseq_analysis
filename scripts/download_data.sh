@@ -4,15 +4,12 @@
 set -e
 
 # Data source information
-# These RNA-seq data are from the study by Piórkowska et al. (2016) in Animal Genetics
+# These RNA-seq data are from a study examining shear force in chicken muscle
 # The SRA accessions were obtained from NCBI's Sequence Read Archive (SRA)
 # BioProject: PRJNA297364
-# Publication: https://doi.org/10.1111/age.12409
-# Each accession corresponds to RNA-seq data from different chicken tissues:
-# - SRR2554344, SRR2554345: Liver samples (2 replicates)
-# - SRR2554362, SRR2554363: Muscle samples (2 replicates)
-# - SRR2554364, SRR2554365: Brain samples (2 replicates)
-# - SRR2554366, SRR2554367: Kidney samples (2 replicates)
+# Each accession corresponds to different shear force conditions:
+# - SRR2554364, SRR2554365, SRR2554366, SRR2554367: High-shear force (4 replicates)
+# - SRR2554344, SRR2554345, SRR2554363, SRR2554362: Low-shear force (4 replicates)
 
 # Set up base directories
 BASE_DIR="$(pwd)"
@@ -77,14 +74,14 @@ download_sra() {
 
 # Define samples and their names
 declare -A SAMPLE_INFO=(
-    ["SRR2554344"]="liver_rep1"
-    ["SRR2554345"]="liver_rep2"
-    ["SRR2554362"]="muscle_rep1"
-    ["SRR2554363"]="muscle_rep2"
-    ["SRR2554364"]="brain_rep1"
-    ["SRR2554365"]="brain_rep2"
-    ["SRR2554366"]="kidney_rep1"
-    ["SRR2554367"]="kidney_rep2"
+    ["SRR2554364"]="high_shear_rep1"
+    ["SRR2554365"]="high_shear_rep2"
+    ["SRR2554366"]="high_shear_rep3"
+    ["SRR2554367"]="high_shear_rep4"
+    ["SRR2554344"]="low_shear_rep4"
+    ["SRR2554345"]="low_shear_rep3"
+    ["SRR2554363"]="low_shear_rep2"
+    ["SRR2554362"]="low_shear_rep1"
 )
 
 # Download all remaining datasets
@@ -114,14 +111,14 @@ echo "Creating sample information file..."
 cat > "${SCRIPT_DIR}/sample_info.txt" << EOL
 # Sample information
 declare -A samples=(
-    ["SRR2554344"]="liver_rep1"
-    ["SRR2554345"]="liver_rep2"
-    ["SRR2554362"]="muscle_rep1"
-    ["SRR2554363"]="muscle_rep2"
-    ["SRR2554364"]="brain_rep1"
-    ["SRR2554365"]="brain_rep2"
-    ["SRR2554366"]="kidney_rep1"
-    ["SRR2554367"]="kidney_rep2"
+    ["SRR2554364"]="high_shear_rep1"
+    ["SRR2554365"]="high_shear_rep2"
+    ["SRR2554366"]="high_shear_rep3"
+    ["SRR2554367"]="high_shear_rep4"
+    ["SRR2554344"]="low_shear_rep4"
+    ["SRR2554345"]="low_shear_rep3"
+    ["SRR2554363"]="low_shear_rep2"
+    ["SRR2554362"]="low_shear_rep1"
 )
 EOL
 

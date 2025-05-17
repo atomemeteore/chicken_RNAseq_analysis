@@ -1,4 +1,4 @@
-# Contributing to Chicken Tissue RNA-seq Analysis
+# Contributing to Chicken Muscle Shear Force RNA-seq Analysis
 
 We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
 

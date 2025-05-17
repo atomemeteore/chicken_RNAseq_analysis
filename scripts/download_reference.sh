@@ -52,7 +52,7 @@ verify_download() {
 
 # Set up base directories
 BASE_DIR="$(pwd)"
-GENOME_DIR="${BASE_DIR}/chicken_atlas/genome"
+GENOME_DIR="${BASE_DIR}/chicken_shear_force/genome"
 mkdir -p "${GENOME_DIR}"
 
 # URLs for Ensembl data (GCA_000002315.5)

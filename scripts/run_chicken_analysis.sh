@@ -7,7 +7,7 @@ set -x
 # System-specific settings
 N_THREADS=6  # Using 75% of available threads for stability
 MAX_MEM="2G"  # Memory usage for sorting
-TMP_DIR="/tmp/chicken_rnaseq_analysis"  # Temporary directory for processing
+TMP_DIR="/tmp/chicken_shear_force_analysis"  # Temporary directory for processing
 
 # Create directory structure
 echo "Creating directory structure..."
@@ -21,7 +21,7 @@ cleanup() {
 trap cleanup EXIT
 
 # Activate conda environment
-source activate chicken_rnaseq_env
+source activate chicken_shear_force_env
 
 # Download chicken reference genome and annotation
 echo "Downloading reference genome and annotation..."
@@ -40,62 +40,62 @@ hisat2-build -p $N_THREADS Gallus_gallus.GalGal5.dna.toplevel.fa chicken_index
 # Function to process a single RNA-seq sample
 process_sample() {
     local SAMPLE_ID=$1
-    local TISSUE_TYPE=$2
+    local CONDITION=$2
     local R1="$SAMPLE_ID"_1.fastq.gz
     local R2="$SAMPLE_ID"_2.fastq.gz
     
-    echo "Processing sample: $SAMPLE_ID ($TISSUE_TYPE)"
+    echo "Processing sample: $SAMPLE_ID ($CONDITION)"
     
     # Quality control
     cd ../data/raw
-    mkdir -p ../../results/qc/raw/${TISSUE_TYPE}
-    fastqc -t $N_THREADS -o ../../results/qc/raw/${TISSUE_TYPE} ${R1} ${R2}
+    mkdir -p ../../results/qc/raw/${CONDITION}
+    fastqc -t $N_THREADS -o ../../results/qc/raw/${CONDITION} ${R1} ${R2}
     
     # Trim adapters and low quality bases
     cd ../processed
     trimmomatic PE -threads $N_THREADS \
         ../raw/${R1} ../raw/${R2} \
-        ${TISSUE_TYPE}_1_trimmed_paired.fastq.gz ${TISSUE_TYPE}_1_trimmed_unpaired.fastq.gz \
-        ${TISSUE_TYPE}_2_trimmed_paired.fastq.gz ${TISSUE_TYPE}_2_trimmed_unpaired.fastq.gz \
+        ${CONDITION}_1_trimmed_paired.fastq.gz ${CONDITION}_1_trimmed_unpaired.fastq.gz \
+        ${CONDITION}_2_trimmed_paired.fastq.gz ${CONDITION}_2_trimmed_unpaired.fastq.gz \
         ILLUMINACLIP:$CONDA_PREFIX/share/trimmomatic/adapters/TruSeq3-PE.fa:2:30:10 \
         LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
     
     # QC on trimmed reads
-    mkdir -p ../../results/qc/trimmed/${TISSUE_TYPE}
-    fastqc -t $N_THREADS -o ../../results/qc/trimmed/${TISSUE_TYPE} \
-        ${TISSUE_TYPE}_1_trimmed_paired.fastq.gz ${TISSUE_TYPE}_2_trimmed_paired.fastq.gz
+    mkdir -p ../../results/qc/trimmed/${CONDITION}
+    fastqc -t $N_THREADS -o ../../results/qc/trimmed/${CONDITION} \
+        ${CONDITION}_1_trimmed_paired.fastq.gz ${CONDITION}_2_trimmed_paired.fastq.gz
     
     # Align reads
-    echo "Aligning reads for ${TISSUE_TYPE}..."
+    echo "Aligning reads for ${CONDITION}..."
     hisat2 -p $N_THREADS --max-intronlen 50000 \
         -x ../../genome/chicken_index \
-        -1 ${TISSUE_TYPE}_1_trimmed_paired.fastq.gz \
-        -2 ${TISSUE_TYPE}_2_trimmed_paired.fastq.gz \
-        -S ../../results/alignment/${TISSUE_TYPE}.sam \
-        2> ../../results/alignment/${TISSUE_TYPE}_alignment_stats.txt
+        -1 ${CONDITION}_1_trimmed_paired.fastq.gz \
+        -2 ${CONDITION}_2_trimmed_paired.fastq.gz \
+        -S ../../results/alignment/${CONDITION}.sam \
+        2> ../../results/alignment/${CONDITION}_alignment_stats.txt
     
     # Convert SAM to BAM and sort
     cd ../../results/alignment
-    samtools view -@ $N_THREADS -bS ${TISSUE_TYPE}.sam > "$TMP_DIR/${TISSUE_TYPE}.bam"
+    samtools view -@ $N_THREADS -bS ${CONDITION}.sam > "$TMP_DIR/${CONDITION}.bam"
     samtools sort -@ $N_THREADS \
         -m $MAX_MEM \
         -T "$TMP_DIR/sort_tmp" \
-        "$TMP_DIR/${TISSUE_TYPE}.bam" \
-        -o ${TISSUE_TYPE}.sorted.bam
+        "$TMP_DIR/${CONDITION}.bam" \
+        -o ${CONDITION}.sorted.bam
     
     # Index BAM
-    samtools index ${TISSUE_TYPE}.sorted.bam
+    samtools index ${CONDITION}.sorted.bam
     
     # Remove intermediate files
-    rm -f ${TISSUE_TYPE}.sam "$TMP_DIR/${TISSUE_TYPE}.bam"
+    rm -f ${CONDITION}.sam "$TMP_DIR/${CONDITION}.bam"
     
     # Count features
-    echo "Counting features for ${TISSUE_TYPE}..."
+    echo "Counting features for ${CONDITION}..."
     cd ..
     featureCounts -T $N_THREADS -p \
         -a ../genome/Gallus_gallus.GalGal5.89.gtf \
-        -o counts/${TISSUE_TYPE}_counts.txt \
-        alignment/${TISSUE_TYPE}.sorted.bam
+        -o counts/${CONDITION}_counts.txt \
+        alignment/${CONDITION}.sorted.bam
 }
 
 # Process all samples from samples.txt
@@ -105,10 +105,10 @@ while read -r line; do
     [[ $line =~ ^#.*$ ]] && continue
     [[ -z "$line" ]] && continue
     
-    # Extract accession and tissue type
+    # Extract accession and condition
     accession=$(echo $line | cut -f1)
-    tissue_type=$(echo $line | cut -f2)
-    process_sample $accession $tissue_type
+    condition=$(echo $line | cut -f2)
+    process_sample $accession $condition
 done < ../data/samples.txt
 
 # Generate MultiQC report

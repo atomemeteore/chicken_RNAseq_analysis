@@ -83,4 +83,10 @@ genome/*
 *.zip
 *.tar
 .DS_Store
-.Rhistory 
+.Rhistory
+
+# Backup files
+*.backup
+plots/backup/
+results/qc/fastqc/backup/
+scripts/SRR13302173/ 

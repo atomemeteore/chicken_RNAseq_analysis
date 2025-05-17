@@ -1,4 +1,4 @@
-Gene_ID	brain_rep1	brain_rep2	kidney_rep1	kidney_rep2	liver_rep1	liver_rep2	muscle_rep1	muscle_rep2
+Gene_ID	high_shear_rep1	high_shear_rep2	high_shear_rep3	high_shear_rep4	low_shear_rep1	low_shear_rep2	low_shear_rep3	low_shear_rep4
 ENSGALG00010000711	269		365		431		290		190		189		204		167
 ENSGALG00010000715	0		1		1		0		0		2		0		2
 ENSGALG00010000717	834		765		854		651		714		872		1011		948
