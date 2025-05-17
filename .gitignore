@@ -62,4 +62,25 @@ genome/*.gtf
 .vscode/
 .idea/
 *.sublime-workspace
-*.sublime-project 
+*.sublime-project
+
+# Dossiers de données
+data/*
+genome/*
+
+# Garder les README
+!data/README.md
+!genome/README.md
+
+# Fichiers courants à ignorer
+*.bam
+*.sam
+*.fastq
+*.fq
+*.fa
+*.fasta
+*.gz
+*.zip
+*.tar
+.DS_Store
+.Rhistory 
