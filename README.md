@@ -95,7 +95,7 @@ The analysis reveals expression patterns between high and low shear force groups
 ### 1. Sample Correlation Analysis
 The correlation heatmap shows the pairwise correlation coefficients between samples from different shear force conditions:
 
-![Sample Correlation Heatmap](images/sample_correlation_heatmap.png)
+![Sample Correlation Heatmap](images/sample_correlation_heatmap_v2.png)
 
 This visualization helps identify:
 - Clear clustering of samples by shear force condition
@@ -105,7 +105,7 @@ This visualization helps identify:
 ### 2. Principal Component Analysis
 The PCA plot demonstrates the separation between high and low shear force groups in reduced dimensional space:
 
-![PCA Plot](images/pca_plot.png)
+![PCA Plot](images/pca_plot_v2.png)
 
 Key observations:
 - Clear segregation between conditions along principal components
@@ -115,7 +115,7 @@ Key observations:
 ### 3. Differential Expression Analysis
 MA plots showing the relationship between mean expression and log fold change:
 
-![MA Plot](images/MA_plot.png)
+![MA Plot](images/MA_plot_v2.png)
 
 This plot reveals:
 - Highlights differentially expressed genes between conditions
@@ -126,7 +126,7 @@ This plot reveals:
 Correlation plots between biological replicates demonstrate the quality and reproducibility of the data:
 
 #### High Shear Force Replicates
-![High Shear Force Correlations](images/high_shear_force_replicate_correlations.png)
+![High Shear Force Correlations](images/high_shear_force_replicate_correlations_v2.png)
 
 The correlations show:
 - Pairwise comparisons between all high shear force replicates
@@ -134,7 +134,7 @@ The correlations show:
 - Consistent expression patterns across replicates
 
 #### Low Shear Force Replicates
-![Low Shear Force Correlations](images/low_shear_force_replicate_correlations.png)
+![Low Shear Force Correlations](images/low_shear_force_replicate_correlations_v2.png)
 
 The correlations demonstrate:
 - Pairwise comparisons between all low shear force replicates
@@ -395,3 +395,23 @@ ls -l results/{qc,alignment,counts}/
 # View MultiQC report when available
 firefox results/qc/multiqc_report.html  # or your preferred browser
 ```
+
+## Citation
+If you use this analysis pipeline, please cite both this repository and the original data source:
+
+```
+Original Data:
+Piórkowska K, et al. (2016). Genome-wide RNA-Seq analysis of breast muscles of two broiler 
+chicken groups differing in shear force. Animal Genetics, 47(1):68-80.
+
+Analysis Pipeline:
+Nguyen A (2024) - Chicken Muscle Shear Force RNA-seq Analysis: A reproduction study
+```
+
+## Acknowledgments
+This project was developed with the assistance of:
+- [Cursor](https://cursor.sh/) - The AI-powered code editor that provided intelligent coding assistance throughout the project
+- Claude (Anthropic) - The AI model powering Cursor that helped with code development, documentation, and analysis pipeline design
+
+## Contact
+For questions about this reproduction analysis, please open a GitHub issue or contact Alexis NGUYEN (alexisnguyen97@yahoo.fr)
