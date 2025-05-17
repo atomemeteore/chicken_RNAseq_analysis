@@ -3,6 +3,17 @@
 # Exit on error
 set -e
 
+# Data source information
+# These RNA-seq data are from the study by Piórkowska et al. (2016) in Animal Genetics
+# The SRA accessions were obtained from NCBI's Sequence Read Archive (SRA)
+# BioProject: PRJNA297364
+# Publication: https://doi.org/10.1111/age.12409
+# Each accession corresponds to RNA-seq data from different chicken tissues:
+# - SRR2554344, SRR2554345: Liver samples (2 replicates)
+# - SRR2554362, SRR2554363: Muscle samples (2 replicates)
+# - SRR2554364, SRR2554365: Brain samples (2 replicates)
+# - SRR2554366, SRR2554367: Kidney samples (2 replicates)
+
 # Set up base directories
 BASE_DIR="$(pwd)"
 DATA_DIR="${BASE_DIR}/chicken_atlas/data/raw"
